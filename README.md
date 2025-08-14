@@ -6,7 +6,7 @@ This project represent an eShop for geeks. Was created to trainning microservice
 
 ## ProductAPI
 
-- To manage product database
+- To manage products
 
 ## CartAPI - Working Progress
 
