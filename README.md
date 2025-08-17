@@ -4,9 +4,21 @@ This project represent an eShop for geeks. Was created to trainning microservice
 
 ![Microservices Architecture](microservices_architecture.jpg)
 
+## How to execute application?
+
+```bash
+# Build each service docker image
+docker build -f docker/product-api.dockerfile -t product-api .
+docker build -f docker/frontend.dockerfile -t frontend .
+
+# Run docker compose
+docker compose up
+```
+
+
 ## ProductAPI
 
-- To manage products
+- To manage products database
 
 ## CartAPI - Working Progress
 
@@ -17,3 +29,7 @@ This project represent an eShop for geeks. Was created to trainning microservice
 ## PaymentAPI - Working Progress
 
 ## Email - Working Progress
+
+## Identity Server - Working Progress
+
+## API Gateway - Working Progress
