@@ -1,27 +1,15 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Frontend.ViewModels;
+using Frontend.Services;
 
 namespace Frontend.Controllers;
 
-public class HomeController : Controller
+public class HomeController(IProductService productService) : Controller
 {
-    private readonly ILogger<HomeController> _logger;
-
-    public HomeController(ILogger<HomeController> logger)
-    {
-        _logger = logger;
-    }
-
-    public IActionResult Index()
-    {
-        return View();
-    }
-
-    public IActionResult Privacy()
-    {
-        return View();
-    }
+    public async Task<IActionResult> Index() => View(await productService.FindAllProducts());
+    public async Task<IActionResult> ProductDetails(long id) => View(await productService.FindProductById(id));
+    public IActionResult Privacy() => View();
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()

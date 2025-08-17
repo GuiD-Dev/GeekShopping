@@ -3,7 +3,7 @@ using Frontend.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddHttpClient<IProductService, ProductService>(
-    c => c.BaseAddress = new Uri(builder.Configuration["ServiceUrls:ProductAPI"])
+    c => c.BaseAddress = new Uri(builder.Configuration["ServiceURLs:ProductAPI"])
 );
 
 // Add services to the container.
