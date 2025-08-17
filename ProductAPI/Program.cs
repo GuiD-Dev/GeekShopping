@@ -24,7 +24,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "GeekShopping.ProductAPI", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "ProductAPI", Version = "v1" });
 });
 
 var app = builder.Build();
@@ -46,5 +46,12 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapControllers();
+
+using (var scope = app.Services.CreateScope())
+{
+    Task.Delay(10000).Wait();
+    var db = scope.ServiceProvider.GetRequiredService<MySQLContext>();
+    db.Database.Migrate();
+}
 
 app.Run();
