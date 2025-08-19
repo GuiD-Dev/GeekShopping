@@ -1,16 +1,51 @@
+using System.Text.Json.Serialization;
+using AutoMapper;
+using CartAPI.DBContext;
+using CartAPI.DTO;
+using CartAPI.Models;
+using CartAPI.Repositories;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddControllersWithViews();
+var connectionString = builder.Configuration["MySQlConnection:MySQlConnectionString"];
+
+builder.Services.AddDbContext<MySQLContext>(options =>
+    options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 4, 6)))
+);
+
+IMapper mapper = new MapperConfiguration(config =>
+{
+    config.CreateMap<ProductDTO, Product>().ReverseMap();
+    config.CreateMap<CartDTO, Cart>().ReverseMap();
+    config.CreateMap<CartDetailDTO, CartDetail>().ReverseMap();
+}).CreateMapper();
+builder.Services.AddSingleton(mapper);
+builder.Services.AddAutoMapper(config => AppDomain.CurrentDomain.GetAssemblies());
+
+builder.Services.AddScoped<ICartRepository, CartRepository>();
+
+builder.Services.AddControllers()
+    .AddJsonOptions(options => { options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve; });
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "CartAPI", Version = "v1" });
+});
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "ProductAPI V1");
+        c.RoutePrefix = string.Empty;
+    });
 }
 
 app.UseHttpsRedirection();
@@ -18,12 +53,13 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-app.MapStaticAssets();
+app.MapControllers();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
-    .WithStaticAssets();
-
+using (var scope = app.Services.CreateScope())
+{
+    Task.Delay(10000).Wait();
+    var db = scope.ServiceProvider.GetRequiredService<MySQLContext>();
+    db.Database.Migrate();
+}
 
 app.Run();
