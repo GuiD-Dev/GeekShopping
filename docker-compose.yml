@@ -25,13 +25,23 @@ services:
     networks:
       - network_database
       - network_microservices
-
       
   cart-api:
     image: cart-api:latest
     ports:
       - "4002:4002"
     container_name: cart-api
+    depends_on:
+      - database
+    networks:
+      - network_database
+      - network_microservices
+
+  coupon-api:
+    image: coupon-api:latest
+    ports:
+      - "4004:4004"
+    container_name: coupon-api
     depends_on:
       - database
     networks:

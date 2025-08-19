@@ -10,6 +10,7 @@ This project represent an eShop for geeks. Was created to trainning microservice
 # Build each service docker image
 docker build -f docker/product-api.dockerfile -t product-api .
 docker build -f docker/cart-api.dockerfile -t cart-api .
+docker build -f docker/coupon-api.dockerfile -t coupon-api .
 docker build -f docker/frontend.dockerfile -t frontend .
 
 # Run docker compose
