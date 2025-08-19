@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using CartAPI.Repositories;
 using CartAPI.DTO;
+using CartAPI.CartAPI.Messages;
 
 namespace CartAPI.Controllers;
 
@@ -35,4 +36,19 @@ public class CartController(ICartRepository cartRepository) : ControllerBase
         var result = cartRepository.RemoveFromCart(cartDetailId);
         return result ? Ok() : BadRequest();
     }
+
+    [HttpPost("checkout")]
+    public async Task<ActionResult<CheckoutDTO>> Checkout(CheckoutDTO dto)
+    {
+        var cart = cartRepository.FindCartByUserId(dto.UserId);
+        if (cart == null) return NotFound();
+
+        dto.Details = cart.Details;
+        dto.DateTime = DateTime.Now;
+
+        // TODO: apply RabbitMQ logic here
+
+        return Ok(dto);
+    }
+
 }
