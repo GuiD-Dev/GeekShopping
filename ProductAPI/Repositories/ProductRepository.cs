@@ -5,51 +5,41 @@ using ProductAPI.Models;
 
 namespace ProductAPI.Repositories;
 
-public class ProductRepository : IProductRepository
+public class ProductRepository(MySQLContext context, IMapper mapper) : IProductRepository
 {
-    private readonly MySQLContext _context;
-    private readonly IMapper _mapper;
-
-
-    public ProductRepository(MySQLContext context, IMapper mapper)
-    {
-        _context = context;
-        _mapper = mapper;
-    }
-
     public IEnumerable<ProductDTO> FindAll()
     {
-        var products = _context.Products.ToList();
-        return _mapper.Map<IEnumerable<ProductDTO>>(products);
+        var products = context.Products.ToList();
+        return mapper.Map<IEnumerable<ProductDTO>>(products);
     }
 
     public ProductDTO FindById(long id)
     {
-        var product = _context.Products.FirstOrDefault(p => p.Id == id);
+        var product = context.Products.FirstOrDefault(p => p.Id == id);
         if (product == null) return null;
-        return _mapper.Map<ProductDTO>(product);
+        return mapper.Map<ProductDTO>(product);
     }
 
     public ProductDTO Create(ProductDTO dto)
     {
-        _context.Products.Add(_mapper.Map<Product>(dto));
-        _context.SaveChanges();
+        context.Products.Add(mapper.Map<Product>(dto));
+        context.SaveChanges();
         return dto;
     }
 
     public ProductDTO Update(ProductDTO dto)
     {
-        _context.Products.Update(_mapper.Map<Product>(dto));
-        _context.SaveChanges();
+        context.Products.Update(mapper.Map<Product>(dto));
+        context.SaveChanges();
         return dto;
     }
 
     public bool Delete(long id)
     {
-        var product = _context.Products.FirstOrDefault(p => p.Id == id);
+        var product = context.Products.FirstOrDefault(p => p.Id == id);
         if (product == null) return false;
-        _context.Products.Remove(product);
-        _context.SaveChanges();
+        context.Products.Remove(product);
+        context.SaveChanges();
         return true;
     }
 }
