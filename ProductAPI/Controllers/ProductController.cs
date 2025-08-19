@@ -6,7 +6,7 @@ namespace ProductAPI.Controllers;
 
 [ApiController]
 [Route("api/v1/[controller]")]
-public class ProductController(ILogger<ProductController> logger, IProductRepository productRepository) : Controller
+public class ProductController(ILogger<ProductController> logger, IProductRepository productRepository) : ControllerBase
 {
     [HttpGet]
     public ActionResult<IEnumerable<ProductDTO>> FindAll()
