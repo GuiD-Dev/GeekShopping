@@ -10,7 +10,7 @@ public interface ICartService
     Task<bool> RemoveFromCart(long cartId);
     Task<bool> ClearCart(string userId);
 
-    Task<bool> ApplyCoupon(CartViewModel cart, string couponCode);
+    Task<bool> ApplyCoupon(CartViewModel cart);
     Task<bool> RemoveCoupon(string userId);
 
     Task<CartViewModel> Checkout(CartViewModel cart);

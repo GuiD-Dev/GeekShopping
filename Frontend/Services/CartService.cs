@@ -45,14 +45,22 @@ public class CartService(HttpClient client) : ICartService
         throw new NotImplementedException();
     }
 
-    public Task<bool> ApplyCoupon(CartViewModel cart, string couponCode)
+    public async Task<bool> ApplyCoupon(CartViewModel cart)
     {
-        throw new NotImplementedException();
+        var response = await client.PostAsJson($"{BasePath}/apply-coupon", cart);
+        if (response.IsSuccessStatusCode)
+            return await response.ReadContentAs<bool>();
+        else
+            throw new Exception("Something went wrong when calling API");
     }
 
-    public Task<bool> RemoveCoupon(string userId)
+    public async Task<bool> RemoveCoupon(string userId)
     {
-        throw new NotImplementedException();
+        var response = await client.DeleteAsync($"{BasePath}/remove-coupon/{userId}");
+        if (response.IsSuccessStatusCode)
+            return await response.ReadContentAs<bool>();
+        else
+            throw new Exception("Something went wrong when calling API");
     }
 
     public Task<CartViewModel> Checkout(CartViewModel cart)

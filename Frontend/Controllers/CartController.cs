@@ -33,6 +33,34 @@ public class CartController(ICartService cartService) : Controller
         return View();
     }
 
+    [HttpPost]
+    [ActionName("ApplyCoupon")]
+    public async Task<IActionResult> ApplyCoupon(CartViewModel model)
+    {
+        // TODO: adjust when Identity Server will be implemented 
+        var userId = User.Claims.Where(u => u.Type == "sub")?.FirstOrDefault()?.Value ?? "1";
+
+        var response = await cartService.ApplyCoupon(model);
+        if (response)
+            return RedirectToAction(nameof(CartIndex));
+
+        return View();
+    }
+
+    [HttpPost]
+    [ActionName("RemoveCoupon")]
+    public async Task<IActionResult> RemoveCoupon()
+    {
+        // TODO: adjust when Identity Server will be implemented 
+        var userId = User.Claims.Where(u => u.Type == "sub")?.FirstOrDefault()?.Value ?? "1";
+
+        var response = await cartService.RemoveCoupon(userId);
+        if (response)
+            return RedirectToAction(nameof(CartIndex));
+
+        return View();
+    }
+
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
