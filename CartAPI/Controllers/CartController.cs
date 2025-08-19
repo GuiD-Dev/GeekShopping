@@ -6,7 +6,7 @@ namespace CartAPI.Controllers;
 
 [ApiController]
 [Route("api/v1/[controller]")]
-public class CartController(ICartRepository cartRepository) : Controller
+public class CartController(ICartRepository cartRepository) : ControllerBase
 {
     [HttpGet("{userId}")]
     public async Task<ActionResult<CartDTO>> FindById(string userId)
