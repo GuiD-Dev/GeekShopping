@@ -1,0 +1,53 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug ProductAPI",
+            "type": "dotnet",
+            "request": "launch",
+            "projectPath": "${workspaceFolder}/ProductAPI/ProductAPI.csproj"
+        },
+        {
+            "name": "Debug CartAPI",
+            "type": "dotnet",
+            "request": "launch",
+            "projectPath": "${workspaceFolder}/CartAPI/CartAPI.csproj"
+        },
+        {
+            "name": "Debug CouponAPI",
+            "type": "dotnet",
+            "request": "launch",
+            "projectPath": "${workspaceFolder}/CouponAPI/CouponAPI.csproj"
+        },
+        {
+            "name": "Debug OrderAPI",
+            "type": "dotnet",
+            "request": "launch",
+            "projectPath": "${workspaceFolder}/Order/OrderAPI.csproj"
+        },
+        {
+            "name": "Debug PaymentAPI",
+            "type": "dotnet",
+            "request": "launch",
+            "projectPath": "${workspaceFolder}/Payment/PaymentAPI.csproj"
+        },
+        {
+            "name": "Debug Frontend",
+            "type": "dotnet",
+            "request": "launch",
+            "projectPath": "${workspaceFolder}/Frontend/Frontend.csproj"
+        },
+    ],
+    "compounds": [
+        {
+            "name": "Debug All",
+            "configurations": [
+                "Debug ProductAPI",
+                "Debug CartAPI",
+                "Debug CouponAPI",
+                "Debug Frontend",
+            ],
+            "stopAll": true
+        }
+    ]
+}
