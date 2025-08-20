@@ -34,7 +34,7 @@ services:
     networks:
       - network_database
       - network_microservices
-      
+
   cart-api:
     image: cart-api:latest
     ports:
@@ -54,6 +54,18 @@ services:
     container_name: coupon-api
     depends_on:
       - database
+    networks:
+      - network_database
+      - network_microservices
+
+  order-api:
+    image: order-api:latest
+    ports:
+      - "4006:4006"
+    container_name: order-api
+    depends_on:
+      - database
+      - rabbitmq
     networks:
       - network_database
       - network_microservices
