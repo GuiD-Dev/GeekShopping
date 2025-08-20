@@ -4,11 +4,11 @@ using System.Text.Json;
 
 namespace CartAPI.RabbitMQ;
 
-public class MessagePublisher : IMessagePublisher
+public class CheckoutPublisher : ICheckoutPublisher
 {
     private readonly IConnection connection;
 
-    public MessagePublisher()
+    public CheckoutPublisher()
     {
         connection = new ConnectionFactory
         {

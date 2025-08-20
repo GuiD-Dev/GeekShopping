@@ -26,7 +26,7 @@ builder.Services.AddAutoMapper(config => AppDomain.CurrentDomain.GetAssemblies()
 
 builder.Services.AddScoped<ICartRepository, CartRepository>();
 
-builder.Services.AddSingleton<IMessagePublisher, MessagePublisher>();
+builder.Services.AddSingleton<ICheckoutPublisher, CheckoutPublisher>();
 
 builder.Services.AddControllers();
 

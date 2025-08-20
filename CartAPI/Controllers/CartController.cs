@@ -7,7 +7,7 @@ namespace CartAPI.Controllers;
 
 [ApiController]
 [Route("api/v1/[controller]")]
-public class CartController(ICartRepository cartRepository, IMessagePublisher messagePublisher) : ControllerBase
+public class CartController(ICartRepository cartRepository, ICheckoutPublisher checkoutPublisher) : ControllerBase
 {
     [HttpGet("{userId}")]
     public async Task<ActionResult<CartDTO>> FindById(string userId)
@@ -46,7 +46,7 @@ public class CartController(ICartRepository cartRepository, IMessagePublisher me
         checkout.Details = cart.Details;
         checkout.DateTime = DateTime.Now;
 
-        messagePublisher.PublishMessage(checkout, "checkout_queue");
+        checkoutPublisher.PublishMessage(checkout, "checkout_queue");
 
         return Ok(checkout);
     }

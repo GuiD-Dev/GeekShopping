@@ -1,6 +1,6 @@
 ﻿namespace CartAPI.RabbitMQ;
 
-public interface IMessagePublisher
+public interface ICheckoutPublisher
 {
     void PublishMessage(CheckoutDTO baseMessage, string queueName);
 }
