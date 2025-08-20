@@ -1,8 +1,8 @@
-using System.Text.Json.Serialization;
 using AutoMapper;
 using CartAPI.DBContext;
 using CartAPI.DTO;
 using CartAPI.Models;
+using CartAPI.RabbitMQ;
 using CartAPI.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -26,8 +26,9 @@ builder.Services.AddAutoMapper(config => AppDomain.CurrentDomain.GetAssemblies()
 
 builder.Services.AddScoped<ICartRepository, CartRepository>();
 
-builder.Services.AddControllers()
-    .AddJsonOptions(options => { options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve; });
+builder.Services.AddSingleton<IMessagePublisher, MessagePublisher>();
+
+builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -43,7 +44,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "ProductAPI V1");
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "CartAPI V1");
         c.RoutePrefix = string.Empty;
     });
 }

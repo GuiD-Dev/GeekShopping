@@ -1,13 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using CartAPI.Repositories;
 using CartAPI.DTO;
-using CartAPI.CartAPI.Messages;
+using CartAPI.RabbitMQ;
 
 namespace CartAPI.Controllers;
 
 [ApiController]
 [Route("api/v1/[controller]")]
-public class CartController(ICartRepository cartRepository) : ControllerBase
+public class CartController(ICartRepository cartRepository, IMessagePublisher messagePublisher) : ControllerBase
 {
     [HttpGet("{userId}")]
     public async Task<ActionResult<CartDTO>> FindById(string userId)
@@ -38,17 +38,17 @@ public class CartController(ICartRepository cartRepository) : ControllerBase
     }
 
     [HttpPost("checkout")]
-    public async Task<ActionResult<CheckoutDTO>> Checkout(CheckoutDTO dto)
+    public async Task<ActionResult<CheckoutDTO>> Checkout(CheckoutDTO checkout)
     {
-        var cart = cartRepository.FindCartByUserId(dto.UserId);
+        var cart = cartRepository.FindCartByUserId(checkout.UserId);
         if (cart == null) return NotFound();
 
-        dto.Details = cart.Details;
-        dto.DateTime = DateTime.Now;
+        checkout.Details = cart.Details;
+        checkout.DateTime = DateTime.Now;
 
-        // TODO: apply RabbitMQ logic here
+        messagePublisher.PublishMessage(checkout, "checkout_queue");
 
-        return Ok(dto);
+        return Ok(checkout);
     }
 
 }

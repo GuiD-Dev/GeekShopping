@@ -1,10 +1,12 @@
 ﻿using CartAPI.DTO;
 
-namespace CartAPI.CartAPI.Messages;
+namespace CartAPI.RabbitMQ;
 
 public class CheckoutDTO
 {
     public long Id { get; set; }
+    public DateTime MessageCreated { get; set; }
+
     public string UserId { get; set; }
     public string CouponCode { get; set; }
     public decimal PurchaseAmount { get; set; }
