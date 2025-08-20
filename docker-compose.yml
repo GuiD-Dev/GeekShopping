@@ -15,6 +15,15 @@ services:
     networks:
       - network_database
 
+  rabbitmq:
+    image: rabbitmq:4-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    container_name: rabbitmq
+    networks:
+      - network_microservices
+
   product-api:
     image: product-api:latest
     ports:
@@ -33,6 +42,7 @@ services:
     container_name: cart-api
     depends_on:
       - database
+      - rabbitmq
     networks:
       - network_database
       - network_microservices
