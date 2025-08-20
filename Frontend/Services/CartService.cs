@@ -63,8 +63,12 @@ public class CartService(HttpClient client) : ICartService
             throw new Exception("Something went wrong when calling API");
     }
 
-    public Task<CartViewModel> Checkout(CartViewModel cart)
+    public async Task<CartViewModel> Checkout(CartViewModel cart)
     {
-        throw new NotImplementedException();
+        var response = await client.PostAsJson($"{BasePath}/checkout", cart);
+        if (response.IsSuccessStatusCode)
+            return await response.ReadContentAs<CartViewModel>();
+        else
+            throw new Exception("Something went wrong when calling API");
     }
 }
